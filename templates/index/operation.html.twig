@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello IndexController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    
+    {{ form_start(form) }}
+        {{ form_row(form.a) }}
+        {{ form_row(form.b) }}
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+
+    {% if result is not empty %}
+        <h2>Résultat :</h2>
+        <p>{{ result }}</p>
+    {% else %}
+        <h1>La chaine est vide</h1> 
+    {% endif %}
+
+</div>
+{% endblock %}

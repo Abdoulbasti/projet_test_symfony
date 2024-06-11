@@ -19,6 +19,10 @@ class Operation
     #[ORM\Column]
     private ?float $b = null;
 
+    #[ORM\Column]
+    private string $resultat;
+    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,6 +52,18 @@ class Operation
         return $this;
     }
 
+
+    public function getResultat(): ?float
+    {
+        return $this->resultat;
+    }
+
+    public function setResultat(string $resultat): static
+    {
+        $this->resultat = $resultat;
+
+        return $this;
+    }
 
     public function add() : ?float {
 
