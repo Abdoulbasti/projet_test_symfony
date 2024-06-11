@@ -36,7 +36,7 @@ class OperationController extends AbstractController
             $mul = $data->multiply();
             $div = $data->divide();
 
-            $result = "add= $add  sub= $sub    divsion=$div   multi= $mul";
+            $result = "add= $add sub= $sub divsion=$div multi= $mul";
             $data->setResultat($result);
             
             //dd($operation);

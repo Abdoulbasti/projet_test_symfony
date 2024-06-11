@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OperationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 #[ORM\Entity(repositoryClass: OperationRepository::class)]
 class Operation
@@ -22,6 +23,7 @@ class Operation
     #[ORM\Column(length:255)]
     private string $resultat;
     
+    private const INTEGER_AFTER_COMMA = 3;
 
     public function getId(): ?int
     {
@@ -67,21 +69,21 @@ class Operation
 
     public function add() : ?float {
 
-        return $this->a + $this->b;
+        return (float)number_format($this->a + $this->b, self::INTEGER_AFTER_COMMA);
     }
 
     public function substraction() : ?float {
 
-        return $this->a - $this->b;
+        return (float)number_format($this->a - $this->b, self::INTEGER_AFTER_COMMA);
     }    
     
     public function multiply() : ?float {
 
-        return $this->a * $this->b;
+        return (float)number_format($this->a * $this->b, self::INTEGER_AFTER_COMMA);
     }    
     
     public function divide() : ?float {
 
-        return $this->a / $this->b;
+        return (float)number_format($this->a / $this->b, self::INTEGER_AFTER_COMMA);
     }
 }
