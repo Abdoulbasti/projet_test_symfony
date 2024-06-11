@@ -19,7 +19,7 @@ class Operation
     #[ORM\Column]
     private ?float $b = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length:255)]
     private string $resultat;
     
 

@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Operation;
 use App\Form\OperationType;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class OperationController extends AbstractController
 {
@@ -16,7 +18,7 @@ class OperationController extends AbstractController
     C'est à partir de cette racine qu'on creer les chemins qu'on veut donner à notre route 
     */
     #[Route('/operation', name: 'formOperations')]
-    public function index(Request $request): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
         //Création du produit et du formulaire avec les outils de symfony
         $operation = new Operation();
@@ -34,21 +36,39 @@ class OperationController extends AbstractController
             $mul = $data->multiply();
             $div = $data->divide();
 
-            $result = "add=".$add."   ".'sub='.$sub."   "."divsion=".$div."   "."multi=" .$mul;
-            //$data->setResultat($result);
+            $result = "add= $add  sub= $sub    divsion=$div   multi= $mul";
+            $data->setResultat($result);
+            
+            //dd($operation);
 
-            return $this->redirectToRoute('formOperations', [
+            //Ajouter les informations de notre entité dans la base de donnée(la persistance)
+            $em->persist($operation);
+            $em->flush($operation);
+
+
+            //Redirection du resulat vers la  route showResulats
+            return $this->redirectToRoute('showResulats', [
                 'result' => $result
             ]);
         }
 
-        $result = $request->query->get('result', null);
-
         return $this->render('index/operation.html.twig',
-        //Liste des choses qu'on renvoi à la au fichier twig : operation.html.twig
         [
-            'form'              => $myForm->createView(),
-            'result'            => $result,
+            'form'              => $myForm->createView()
+        ]);
+    }
+
+
+    #[Route('/operation/result', name: 'showResulats')]
+    public function show(Request $request): Response
+    {
+        $result = $request->query->get('result'); //GET : pour recuperer les information via le lien de l'url
+
+
+        //$result = $request->request->get('result'); //POST : pour recuperer la valeur de result via l'en tête http
+        return $this->render('index/showResult.html.twig',
+        [
+            'result'            => $result
         ]);
     }
 }
