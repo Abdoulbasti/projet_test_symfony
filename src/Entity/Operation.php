@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\OperationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OperationRepository::class)]
 class Operation
@@ -17,6 +18,10 @@ class Operation
     #[ORM\Column]
     private ?float $a = null;
 
+    #[Assert\NotEqualTo(
+        value: 0,
+        message:"La valeur de b ne doit pas être null")
+        ]
     #[ORM\Column]
     private ?float $b = null;
 

@@ -29,18 +29,11 @@ class OperationType extends AbstractType
             [
                 "label"     => "Entrer la valeur de b : ",
                 "scale"     => 3,
-                "html5"     => true
+                "html5"     => true,
                 ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Calculer'
             ]);
-
-            /*
-            ->add('resultat', TextType::class,
-            [
-                "label"     => "resultat des 4 operantions sont: ",
-                'data'      => 'Le resultat des operations'
-            ])*/
     }
 
 

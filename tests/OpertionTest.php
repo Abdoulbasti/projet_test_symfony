@@ -6,6 +6,12 @@ use PHPUnit\Framework\TestCase;
 
 use App\Entity\Operation;
 
+
+
+/*A faire : 
+-Utiliser les valeurs directement
+-La gestion des exception
+-bootstrap*/
 class OpertionTest extends TestCase
 {
     private Operation $actual1, $actual2;
@@ -57,7 +63,7 @@ class OpertionTest extends TestCase
         $this->assertEquals($expected1, $actualAdd1);
 
         $actualAdd2 = $this->actual2->divide();
-        $expected2 = 10.778;
+        $expected2 = 10.778; 
         $this->assertEquals($expected2, $actualAdd2);
     }
 }

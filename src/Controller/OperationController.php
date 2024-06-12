@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Operation;
 use App\Form\OperationType;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OperationController extends AbstractController
 {
@@ -18,33 +18,40 @@ class OperationController extends AbstractController
     C'est à partir de cette racine qu'on creer les chemins qu'on veut donner à notre route 
     */
     #[Route('/operation', name: 'formOperations')]
-    public function index(Request $request, EntityManagerInterface $em): Response
+    public function index(Request $request, EntityManagerInterface $em, ValidatorInterface $validator): Response
     {
         //Création du produit et du formulaire avec les outils de symfony
         $operation = new Operation();
         $myForm = $this->createForm(OperationType::class, $operation); //Pas besoin de option il déja définie dans OperationType
-
-        $myForm->handleRequest($request); 
-
         $result = "";
-        if($myForm->isSubmitted() && $myForm->isValid()){
+
+        $myForm->handleRequest($request);
+
+        if($myForm->isSubmitted()){
             $data = $myForm->getData();
-            
-            //Effectuer les operations
+            $errors = $validator->validate($operation);
+            if (count($errors) > 0) {
+                $result = (string) $errors;
+                //dd($result);
+                
+
+                //Redirection du resulat vers la  route showResulats
+                return $this->redirectToRoute('showResulats', [
+                    'result' => $result
+                ]);
+            }
+
+            //Stocker les données dans l'entité operation
             $add = $data->add();
             $sub = $data->substraction();
             $mul = $data->multiply();
             $div = $data->divide();
-
             $result = "add= $add sub= $sub divsion=$div multi= $mul";
             $data->setResultat($result);
             
-            //dd($operation);
-
-            //Ajouter les informations de notre entité dans la base de donnée(la persistance)
+            //Persistance à la base de donnée
             $em->persist($operation);
             $em->flush($operation);
-
 
             //Redirection du resulat vers la  route showResulats
             return $this->redirectToRoute('showResulats', [
@@ -54,9 +61,10 @@ class OperationController extends AbstractController
 
         return $this->render('index/operation.html.twig',
         [
-            'form'              => $myForm->createView()
+            'form'          => $myForm->createView()
         ]);
     }
+
 
 
     #[Route('/operation/result', name: 'showResulats')]
