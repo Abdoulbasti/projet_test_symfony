@@ -11,9 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Operation
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue("SEQUENCE")]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column]
     private ?float $a = null;
@@ -27,6 +27,9 @@ class Operation
 
     #[ORM\Column(length:255)]
     private string $resultat;
+
+    #[ORM\Column(length: 50, nullable: false)]
+    private ?string $resultat2 = null;
     
     private const INTEGER_AFTER_COMMA = 3;
 
@@ -90,5 +93,17 @@ class Operation
     public function divide() : ?float {
 
         return (float)number_format($this->a / $this->b, self::INTEGER_AFTER_COMMA);
+    }
+
+    public function getResultat2(): ?string
+    {
+        return $this->resultat2;
+    }
+
+    public function setResultat2(?string $resultat2): static
+    {
+        $this->resultat2 = $resultat2;
+
+        return $this;
     }
 }

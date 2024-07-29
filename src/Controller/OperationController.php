@@ -39,8 +39,13 @@ class OperationController extends AbstractController
                 return $this->redirectToRoute('showResulats', [
                     'result' => $result
                 ]);
-            }
+            }            
 
+            // Ne pas initialiser les valeurs de a et b pour provoquer une erreur de type Not Null violation
+            $operation->setA($data->getA());
+            $operation->setB($data->getB());
+
+            
             //Stocker les données dans l'entité operation
             $add = $data->add();
             $sub = $data->substraction();
@@ -48,7 +53,7 @@ class OperationController extends AbstractController
             $div = $data->divide();
             $result = "add= $add sub= $sub divsion=$div multi= $mul";
             $data->setResultat($result);
-            
+
             //Persistance à la base de donnée
             $em->persist($operation);
             $em->flush($operation);
