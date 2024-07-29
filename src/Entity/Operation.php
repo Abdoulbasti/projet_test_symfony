@@ -106,4 +106,8 @@ class Operation
 
         return $this;
     }
+
+    /**
+     * Ceci est un commentaire de test pour differencier la classes operation de master de celui de branch_test2
+     */
 }
